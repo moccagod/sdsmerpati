@@ -12,6 +12,7 @@ import Berita from "./components/pages/Berita";
 import Kontak from "./components/pages/Kontak";
 import Ekstrakurikuler from "./components/pages/akademik/Ekstrakurikuler";
 import PPDB from "./components/pages/PPDB";
+import Prestasi from "./components/pages/akademik/Prestasi";
 
 function App() {
   const location = useLocation();
@@ -149,6 +150,18 @@ function App() {
                 exit={{ opacity: 0 }}
               >
                 <PPDB />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/prestasi"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Prestasi />
               </motion.div>
             }
           />
