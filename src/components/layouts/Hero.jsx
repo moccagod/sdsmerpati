@@ -7,7 +7,7 @@ const slides = [
     title: "Selamat Datang di SDS Merpati",
     description:
       "Sekolah Dasar terbaik untuk membentuk generasi cerdas dan berakhlak mulia.",
-    link: "/#ppdb",
+    link: "/ppdb",
     buttonText: "Daftar Sekarang",
   },
   {
@@ -15,15 +15,15 @@ const slides = [
     title: "Pendidikan Berkualitas",
     description:
       "Kami menyediakan lingkungan belajar yang aman, nyaman, dan menyenangkan.",
-    link: "/#tentang",
-    buttonText: "Tentang Kami",
+    link: "/prestasi",
+    buttonText: "Prestasi",
   },
   {
     image: "/sdsmerpati/images/hero3.jpg",
     title: "Guru Profesional",
     description:
       "Tenaga pendidik berpengalaman siap membimbing anak-anak meraih prestasi.",
-    link: "/#guru",
+    link: "/guru",
     buttonText: "Kenali Guru Kami",
   },
 ];
