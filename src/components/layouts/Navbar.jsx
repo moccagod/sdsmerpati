@@ -30,8 +30,8 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
-    <div className="relative z-50">
-      <nav className="bg-white text-gray px-8 py-4 flex justify-between items-center shadow-lg relative">
+    <div className="z-50">
+      <nav className="fixed top-0 left-0 w-full bg-white z-[999] text-gray px-8 py-4 flex justify-between items-center shadow-lg">
         <Link to="/" className="flex items-center gap-2">
           <img
             src="./images/logo-merpati.png"
