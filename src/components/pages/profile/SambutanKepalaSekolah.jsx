@@ -4,7 +4,7 @@ const SambutanKepalaSekolah = () => {
   return (
     <div>
       <Navbar />
-      <h1>About</h1>
+      <h1>Sambutan Kepala Sekolah</h1>
     </div>
   );
 };

@@ -1,41 +1,60 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
+  const academicDropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        openDropdown &&
+        !profileDropdownRef.current?.contains(event.target) &&
+        !academicDropdownRef.current?.contains(event.target)
+      ) {
         setOpenDropdown(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [openDropdown]);
 
-  // Toggle dropdown
   const handleDropdownToggle = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
     <div className="relative z-50">
       <nav className="bg-white text-gray px-8 py-4 flex justify-between items-center shadow-lg relative">
-        <Link to="/">
-          <div className="text-xl font-bold">SDS MERPATI</div>
+        <Link to="/" className="flex items-center gap-2">
+          <img
+            src="./images/logo-merpati.png"
+            alt="Logo"
+            className="h-12 w-12 object-contain"
+          />
+          <span className="text-xl font-bold hidden md:inline">
+            SDS MERPATI
+          </span>
         </Link>
-        {/* Burger Menu */}
-        <button className="md:hidden text-gray-800" onClick={toggleMobileMenu}>
-          {isMobileMenuOpen ? "✖" : "☰"}
+
+        <button
+          className="md:hidden text-gray-800"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle Menu"
+        >
+          {isMobileMenuOpen ? (
+            <X size={28} strokeWidth={2.5} />
+          ) : (
+            <Menu size={28} strokeWidth={2.5} />
+          )}
         </button>
+
         <div
           className={`md:flex gap-8 ${
             isMobileMenuOpen ? "flex flex-col" : "hidden md:flex"
@@ -46,20 +65,31 @@ const Navbar = () => {
           </Link>
 
           {/* Profile Dropdown */}
-          <div className="relative md:static" ref={dropdownRef}>
+          <div
+            className="relative md:static"
+            ref={profileDropdownRef}
+            onMouseEnter={() => setOpenDropdown("profile")}
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
             <button
-              className="text-gray-800 hover:text-gray-500 cursor-pointer md:relative"
+              className="flex items-center gap-1 text-gray-800 hover:text-gray-500 cursor-pointer md:relative"
               onClick={() => handleDropdownToggle("profile")}
             >
-              Profile ▾
+              Profile{" "}
+              {openDropdown === "profile" ? (
+                <ChevronUp size={16} />
+              ) : (
+                <ChevronDown size={16} />
+              )}
             </button>
+
             <AnimatePresence>
               {openDropdown === "profile" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="bg-white border border-gray-200 shadow-lg rounded-lg py-2 mt-2 w-full md:w-48 z-20 md:absolute"
+                  className="bg-white border border-gray-200 shadow-lg rounded-lg py-2 mt-2 w-full md:w-48 z-20 relative md:absolute"
                 >
                   <Link
                     to="/sambutankepalasekolah"
@@ -85,20 +115,31 @@ const Navbar = () => {
           </div>
 
           {/* Akademik Dropdown */}
-          <div className="relative md:static" ref={dropdownRef}>
+          <div
+            className="relative md:static"
+            ref={academicDropdownRef}
+            onMouseEnter={() => setOpenDropdown("academic")}
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
             <button
-              className="text-gray-800 hover:text-gray-500 cursor-pointer md:relative"
+              className="flex items-center gap-1 text-gray-800 hover:text-gray-500 cursor-pointer md:relative"
               onClick={() => handleDropdownToggle("academic")}
             >
-              Akademik ▾
+              Akademik{" "}
+              {openDropdown === "academic" ? (
+                <ChevronUp size={16} />
+              ) : (
+                <ChevronDown size={16} />
+              )}
             </button>
+
             <AnimatePresence>
               {openDropdown === "academic" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="bg-white border border-gray-200 shadow-lg rounded-lg py-2 mt-2 w-full md:w-48 z-20 md:absolute"
+                  className="bg-white border border-gray-200 shadow-lg rounded-lg py-2 mt-2 w-full md:w-48 z-20 relative md:absolute"
                 >
                   <Link
                     to="/programsekolah"
@@ -137,14 +178,14 @@ const Navbar = () => {
           </Link>
           <Link
             to="/ppdb"
-            className="bg-teal-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-all md:hidden"
+            className="bg-teal-500 text-white px-4 py-3 font-extrabold mb-4 rounded-full shadow-lg hover:bg-teal-600 transition-all md:hidden text-center"
           >
             PPDB
           </Link>
         </div>
         <Link
           to="/ppdb"
-          className="bg-teal-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-all hidden md:inline-block"
+          className="bg-teal-500 text-white px-6 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-all hidden md:inline-block font-extrabold"
         >
           PPDB
         </Link>
