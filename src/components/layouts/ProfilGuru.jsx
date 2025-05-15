@@ -6,48 +6,48 @@ const guruData = [
   {
     nama: "Finna Sharfina Khadijah, S. Pd.",
     jabatan: "Kepala Sekolah",
-    foto: "/sdsmerpati/images/kepsek.png",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Syahadati Nur Maghfiroh",
     jabatan: "Guru Kelas 1",
-    foto: "/sdsmerpati/images/guru1.png",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Diah Widiastuti",
     jabatan: "Guru Kelas 2",
-    foto: "/sdsmerpati/images/guru2.jpg",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Putri Hera Diani",
     jabatan: "Guru Kelas 3",
-    foto: "/sdsmerpati/images/guru3.jpg",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Aulia Sofiatunnisa",
     jabatan: "Guru Kelas 4",
-    foto: "/sdsmerpati/images/tendik1.jpg",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Mega Nur Julia",
     jabatan: "Guru Kelas 5",
-    foto: "/sdsmerpati/images/tendik1.jpg",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Fa'izah Nur Syafitri",
     jabatan: "Guru Kelas 6",
-    foto: "/sdsmerpati/images/tendik1.jpg",
+    foto: "/sdsmerpati/images/gurucwe.png",
   },
   {
     nama: "Azmi Nailal Hadi",
     jabatan: "Operator",
-    foto: "/sdsmerpati/images/tendik1.jpg",
+    foto: "/sdsmerpati/images/gurucwo.png",
   },
 ];
 
 const ProfilGuru = () => {
   return (
-    <section className="bg-white py-16 px-6 md:px-20">
+    <section className="bg-white py-16 px-4 md:px-20">
       <div className="max-w-7xl mx-auto">
         {/* Header: Judul + Button (Desktop) */}
         <div className="mb-8">
@@ -68,7 +68,7 @@ const ProfilGuru = () => {
 
         {/* Slider Card */}
         <motion.div
-          className="flex overflow-x-auto space-x-6 pb-4"
+          className="flex overflow-x-auto space-x-4 pb-4"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -77,13 +77,15 @@ const ProfilGuru = () => {
           {guruData.map((guru, index) => (
             <div
               key={index}
-              className="min-w-[250px] bg-white rounded-xl shadow-md flex-shrink-0"
+              className="flex-shrink-0 bg-white rounded-xl shadow-md w-64 sm:w-56 md:w-72"
             >
-              <img
-                src={guru.foto}
-                alt={guru.nama}
-                className="h-56 w-full object-cover rounded-t-xl"
-              />
+              <div className="w-full h-48 overflow-hidden rounded-t-xl">
+                <img
+                  src={guru.foto}
+                  alt={guru.nama}
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
               <div className="p-4 text-center">
                 <h3 className="text-lg font-semibold text-gray-800">
                   {guru.nama}

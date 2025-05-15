@@ -10,7 +10,6 @@ import Kurikulum from "./components/pages/akademik/Kurikulum";
 import ProgramSekolah from "./components/pages/akademik/ProgramSekolah";
 import Berita from "./components/pages/Berita";
 import Kontak from "./components/pages/Kontak";
-import Extrakurikuler from "./components/pages/akademik/Ekstrakurikuler";
 import Ekstrakurikuler from "./components/pages/akademik/Ekstrakurikuler";
 import PPDB from "./components/pages/PPDB";
 
