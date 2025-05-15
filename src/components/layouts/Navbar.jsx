@@ -185,7 +185,7 @@ const Navbar = () => {
         </div>
         <Link
           to="/ppdb"
-          className="bg-teal-500 text-white px-6 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-all hidden md:inline-block font-extrabold"
+          className="bg-teal-500 text-white px-6 py-2 rounded-full shadow-sm hover:bg-teal-600 transition-all hidden md:inline-block font-extrabold"
         >
           PPDB
         </Link>
