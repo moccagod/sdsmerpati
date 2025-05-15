@@ -1,10 +1,12 @@
+import Footer from "../../layouts/Footer";
 import Navbar from "../../layouts/Navbar";
 
 const Ekstrakurikuler = () => {
   return (
     <div>
       <Navbar />
-      <h1>Ekstrakurikuler</h1>
+      <h1 className="pt-28">Ekstrakurikuler</h1>
+      <Footer />
     </div>
   );
 };

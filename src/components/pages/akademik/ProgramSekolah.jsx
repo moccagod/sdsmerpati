@@ -4,7 +4,8 @@ const ProgramSekolah = () => {
   return (
     <div>
       <Navbar />
-      <h1>Program Sekolah</h1>
+      <h1 className="pt-28">Program Sekolah</h1>
+      <Footer/>
     </div>
   );
 };

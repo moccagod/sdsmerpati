@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-teal-700 text-white py-12 px-6 md:px-20">
+    <footer className="bg-teal-700 text-white pt-12 pb-7 px-6 md:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Logo & Deskripsi */}
         <div>
@@ -25,6 +25,11 @@ const Footer = () => {
             <li>
               <Link to="/" className="hover:underline">
                 Beranda
+              </Link>
+            </li>
+            <li>
+              <Link to="/ppdb" className="hover:underline">
+                PPDB
               </Link>
             </li>
             <li>
@@ -54,7 +59,7 @@ const Footer = () => {
               Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10120
             </li>
             <li>Jakarta, Indonesia</li>
-            <li>Telp: (021) 12345678</li>
+            <li>Telp: +62 895-4018-27200</li>
             <li>sds.merpati@gmail.com</li>
           </ul>
         </div>
@@ -62,7 +67,8 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="mt-10 text-center text-sm text-white/70 border-t border-white/20 pt-6">
-        &copy; {new Date().getFullYear()} SD Merpati. All rights reserved.
+        &copy; {new Date().getFullYear()} SDS Merpati. All rights reserved.
+        <p>Made With ❤️ By Azmi Nailal Hadi</p>
       </div>
     </footer>
   );

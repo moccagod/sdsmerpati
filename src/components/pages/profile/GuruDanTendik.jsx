@@ -82,7 +82,7 @@ const GuruDanTendik = () => {
     <div>
       <Navbar />
       <motion.main
-        className="max-w-7xl mx-auto px-6 py-12"
+        className="max-w-7xl mx-auto px-6 py-12 pt-24"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

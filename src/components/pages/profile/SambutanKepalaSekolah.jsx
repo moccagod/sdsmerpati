@@ -27,7 +27,7 @@ const SambutanKepalaSekolah = () => {
     <div>
       <Navbar />
       <motion.main
-        className="max-w-5xl mx-auto px-6 py-12"
+        className="max-w-5xl mx-auto px-6 py-12 pt-28"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
