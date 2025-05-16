@@ -23,7 +23,7 @@ const slides = [
     title: "Guru Profesional",
     description:
       "Tenaga pendidik berpengalaman siap membimbing anak-anak meraih prestasi.",
-    link: "/guru",
+    link: "/gurudantendik",
     buttonText: "Kenali Guru Kami",
   },
 ];
