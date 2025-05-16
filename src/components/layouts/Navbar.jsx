@@ -176,6 +176,9 @@ const Navbar = () => {
             </AnimatePresence>
           </div>
 
+          <Link to="/pengumuman" className="text-gray-800 hover:text-gray-500">
+            Pengumuman
+          </Link>
           <Link to="/berita" className="text-gray-800 hover:text-gray-500">
             Berita
           </Link>

@@ -9,39 +9,52 @@ const programs = [
     title: "Program Pendidikan Karakter",
     description:
       "Membentuk karakter siswa yang berakhlak mulia melalui berbagai kegiatan positif dan pembiasaan nilai-nilai agama dan moral.",
-    image: "/sdsmerpati/images/karakter.jpg",
+    image: "/sdsmerpati/images/hero1.jpg",
+    link: "/programsekolah/programsekolah1",
   },
   {
     title: "Program Pembelajaran Aktif",
     description:
       "Menerapkan metode pembelajaran yang interaktif dan menyenangkan untuk meningkatkan partisipasi siswa.",
-    image: "/sdsmerpati/images/aktif.jpg",
+    image: "/sdsmerpati/images/hero2.jpg",
+    link: "/programsekolah/programsekolah2",
   },
   {
     title: "Program Ekstrakurikuler",
     description:
       "Mengembangkan bakat dan minat siswa melalui berbagai kegiatan ekstrakurikuler yang kreatif dan inspiratif.",
-    image: "/sdsmerpati/images/ekskul.jpg",
+    image: "/sdsmerpati/images/hero3.jpg",
+    link: "/programsekolah/programsekolah3",
   },
   {
     title: "Program Pengembangan Teknologi",
     description:
       "Mempersiapkan siswa menghadapi era digital dengan pelatihan teknologi dan literasi digital.",
-    image: "/sdsmerpati/images/teknologi.jpg",
+    image: "/sdsmerpati/images/hero1.jpg",
+    link: "/programsekolah/programsekolah4",
   },
   {
     title: "Program Kesehatan dan Kebersihan",
     description:
       "Membudayakan pola hidup sehat melalui program kesehatan dan kebersihan yang terintegrasi.",
-    image: "/sdsmerpati/images/kesehatan.jpg",
+    image: "/sdsmerpati/images/hero2.jpg",
+    link: "/programsekolah/programsekolah5",
   },
   {
     title: "Program Kesehatan dan Kebersihan",
     description:
       "Membudayakan pola hidup sehat melalui program kesehatan dan kebersihan yang terintegrasi.",
-    image: "/sdsmerpati/images/kesehatan.jpg",
+    image: "/sdsmerpati/images/hero3.jpg",
+    link: "/programsekolah/programsekolah6",
   },
 ];
+
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+};
 
 const ProgramSekolah = () => {
   return (
@@ -72,7 +85,7 @@ const ProgramSekolah = () => {
                 </h2>
                 <p className="text-gray-600 mb-4">{program.description}</p>
                 <Link
-                  to="/"
+                  to={program.link}
                   className="text-teal-600 hover:text-teal-800 font-semibold"
                 >
                   Selengkapnya &rarr;
