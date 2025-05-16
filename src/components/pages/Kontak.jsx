@@ -1,8 +1,63 @@
 import { motion } from "framer-motion";
 import Footer from "../layouts/Footer";
 import Navbar from "../layouts/Navbar";
+import { useState } from "react";
 
 const Kontak = () => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    whatsapp: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form data before submit:", formData); // Lihat di browser console
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch("/api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === "success") {
+        setSubmitStatus("success");
+        setFormData({
+          fullName: "",
+          email: "",
+          whatsapp: "",
+          message: "",
+        });
+      } else {
+        console.error("Error:", result);
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -16,6 +71,27 @@ const Kontak = () => {
           >
             Hubungi Kami
           </motion.h1>
+
+          {submitStatus === "success" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6 p-4 hidden md:block bg-green-100 text-green-700 rounded-lg"
+            >
+              Pesan berhasil terkirim! Kami akan segera menghubungi Anda.
+            </motion.div>
+          )}
+
+          {submitStatus === "error" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6 p-4 hidden md:block bg-red-100 text-red-700 rounded-lg"
+            >
+              Terjadi kesalahan. Silakan coba lagi atau hubungi kami melalui
+              telepon/email.
+            </motion.div>
+          )}
 
           <div className="grid md:grid-cols-2 gap-10">
             {/* Informasi Kontak */}
@@ -69,52 +145,91 @@ const Kontak = () => {
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 Kirim Pesan
               </h2>
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
-                  <label className="block text-gray-600 mb-1">Nama</label>
+                  <label className="block text-gray-600 mb-1">
+                    Nama Lengkap
+                  </label>
                   <input
                     type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                     placeholder="Nama lengkap"
+                    required
                   />
                 </div>
                 <div>
                   <label className="block text-gray-600 mb-1">Email</label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                     placeholder="Alamat email"
+                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-600 mb-1">
-                    Nomor Whatsapp
-                  </label>
+                  <label className="block text-gray-600 mb-1">Whatsapp</label>
                   <input
                     type="tel"
+                    name="whatsapp"
+                    value={formData.whatsapp}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="Nomor Whatsapp"
+                    placeholder="Masukan nomor whatsapp..."
+                    required
                   />
                 </div>
                 <div>
                   <label className="block text-gray-600 mb-1">Pesan</label>
                   <textarea
-                    rows="5"
+                    rows={5}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                     placeholder="Tulis pesan Anda di sini..."
+                    required
                   ></textarea>
                 </div>
                 <div className="flex justify-center md:justify-start">
                   <button
                     type="submit"
-                    className="bg-teal-500 text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-teal-600 transition-all"
+                    disabled={isSubmitting}
+                    className={`bg-teal-500 text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-teal-600 transition-all ${
+                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Kirim Pesan
+                    {isSubmitting ? "Mengirim..." : "Kirim Pesan"}
                   </button>
                 </div>
               </form>
             </motion.div>
           </div>
+          {submitStatus === "success" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6 p-4 md:hidden mt-10 bg-green-100 text-green-700 rounded-lg"
+            >
+              Pesan berhasil terkirim! Kami akan segera menghubungi Anda.
+            </motion.div>
+          )}
+
+          {submitStatus === "error" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6 p-4 md:hidden mt-10 bg-red-100 text-red-700 rounded-lg"
+            >
+              Terjadi kesalahan. Silakan coba lagi atau hubungi kami melalui
+              telepon/email.
+            </motion.div>
+          )}
         </div>
       </div>
       <Footer />
