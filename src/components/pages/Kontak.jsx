@@ -29,7 +29,7 @@ const Kontak = () => {
 
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxyzn6FpCmLEEu59RolPoiAo-G85oBbgVtdNR1BcDjmgVVOkIL7rA1WwfhuOtZGmo8/exec",
+        "https://script.google.com/macros/s/AKfycbw0CkcP8NVqE-KWoFEh9ll6DEznOjbVZEEwY4FTR2QDMVvj47h0Swqx40rgJs1ZWj8/exec",
         {
           method: "POST",
           headers: {
