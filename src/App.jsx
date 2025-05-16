@@ -20,6 +20,8 @@ import ProgramSekolah4 from "./components/pages/akademik/Program Sekolah/Program
 import ProgramSekolah5 from "./components/pages/akademik/Program Sekolah/ProgramSekolah5";
 import ProgramSekolah6 from "./components/pages/akademik/Program Sekolah/ProgramSekolah6";
 import Pengumuman from "./components/pages/Pengumuman";
+import Pengumuman1 from "./components/pages/pengumuman/Pengumuman1";
+import Berita1 from "./components/pages/berita/Berita1";
 
 function App() {
   const location = useLocation();
@@ -253,6 +255,30 @@ function App() {
                 exit={{ opacity: 0 }}
               >
                 <ProgramSekolah6 />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/pengumuman/pengumuman1"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Pengumuman1 />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/berita/berita1"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Berita1 />
               </motion.div>
             }
           />
