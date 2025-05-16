@@ -28,13 +28,16 @@ const Kontak = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch("/api", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "hhttps://script.google.com/macros/s/AKfycbxyzn6FpCmLEEu59RolPoiAo-G85oBbgVtdNR1BcDjmgVVOkIL7rA1WwfhuOtZGmo8/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
 
