@@ -1,17 +1,17 @@
-// src/pages/admin/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { supabase } from "../../../utils/supabaseClient";
+import { FaWhatsapp } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import '../../../assets/style/Admin.css'
 
 const AdminDashboard = () => {
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(false);
-  const [artikelDropdownOpen, setArtikelDropdownOpen] = useState(false);
-  const [pengumumanDropdownOpen, setPengumumanDropdownOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     checkMobile();
@@ -19,23 +19,30 @@ const AdminDashboard = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Cek apakah halaman sekarang termasuk halaman artikel terkait dropdown
-  const isArtikelPage =
-    location.pathname.startsWith("/admin/tambahartikel") ||
-    location.pathname.startsWith("/admin/lihatartikel");
-
-  const isPengumumanPage =
-    location.pathname.startsWith("/admin/tambahpengumuman") ||
-    location.pathname.startsWith("/admin/lihatpengumuman") ||
-    location.pathname.startsWith("/admin/editpengumuman");
-
-  // Dropdown terbuka kalau state open atau karena halaman aktif
-  const dropdownOpenArtikel = artikelDropdownOpen || isArtikelPage;
-  const dropdownOpenPengumuman = pengumumanDropdownOpen || isPengumumanPage;
-
   const menus = [
     { path: "/admin", label: "Dashboard" },
     { path: "/admin/pengaturanppdb", label: "PPDB" },
+    {
+      label: "Artikel",
+      children: [
+        { path: "/admin/tambahartikel", label: "Tambah Artikel" },
+        { path: "/admin/lihatartikel", label: "Lihat Artikel" },
+      ],
+    },
+    {
+      label: "Pengumuman",
+      children: [
+        { path: "/admin/tambahpengumuman", label: "Tambah Pengumuman" },
+        { path: "/admin/lihatpengumuman", label: "Lihat Pengumuman" },
+      ],
+    },
+    {
+      label: "Prestasi",
+      children: [
+        { path: "/admin/tambahprestasi", label: "Tambah Prestasi" },
+        { path: "/admin/lihatprestasi", label: "Lihat Prestasi" },
+      ],
+    },
     { path: "/admin/pengaturan", label: "Pengaturan Akun" },
   ];
 
@@ -54,270 +61,128 @@ const AdminDashboard = () => {
     );
   }
 
-  const [prestasiDropdownOpen, setPrestasiDropdownOpen] = useState(false);
-
-  // Cek halaman aktif untuk prestasi
-  const isPrestasiPage =
-    location.pathname.startsWith("/admin/tambahprestasi") ||
-    location.pathname.startsWith("/admin/lihatprestasi");
-
-  // Dropdown prestasi terbuka kalau state open atau halaman aktif
-  const dropdownOpenPrestasi = prestasiDropdownOpen || isPrestasiPage;
+  const [openMenu, setOpenMenu] = useState("");
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex flex-col h-screen sticky top-0">
-        <div className="px-6 py-4 border-b flex items-center space-x-3">
+      <motion.aside
+        initial={{ x: -300, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-72 bg-white shadow-lg flex flex-col h-screen sticky top-0 p-6"
+      >
+        <div className="flex items-center space-x-3 mb-8">
           <img
             src="/sdsmerpati/images/logo-merpati.png"
             alt="Logo"
-            className="w-8 h-8 object-contain"
+            className="w-10 h-10 object-contain"
           />
-          <h1 className="text-xl font-bold text-teal-700">Admin Panel</h1>
+          <h1 className="text-2xl font-bold text-teal-700">Admin Panel</h1>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-auto">
-          {/* Menu selain Pengaturan Akun */}
-          {menus
-            .filter(({ label }) => label !== "Pengaturan Akun")
-            .map(({ path, label }) => (
+        <nav className="flex-1 space-y-2">
+          {menus.map((menu) =>
+            menu.children ? (
+              <div key={menu.label}>
+                <button
+                  onClick={() =>
+                    setOpenMenu((prev) =>
+                      prev === menu.label ? "" : menu.label
+                    )
+                  }
+                  className={`cursor-pointer w-full text-left px-4 py-3 rounded-lg flex justify-between items-center transition-all duration-300 ${
+                    openMenu === menu.label
+                      ? "bg-gradient-to-r from-teal-400 to-teal-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {menu.label}
+                  <motion.svg
+                    initial={false}
+                    animate={{
+                      rotate: openMenu === menu.label ? 180 : 0,
+                    }}
+                    className="w-4 h-4 ml-2 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </motion.svg>
+                </button>
+                <AnimatePresence>
+                  {openMenu === menu.label && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="ml-6 overflow-hidden"
+                    >
+                      {menu.children.map((child) => (
+                        <Link
+                          key={child.path}
+                          to={child.path}
+                          className={`cursor-pointer block px-4 py-2 rounded-lg transition-all duration-300 ${
+                            location.pathname === child.path
+                              ? "bg-teal-300 font-semibold text-teal-900"
+                              : "text-teal-700 hover:bg-teal-100"
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
               <Link
-                key={path}
-                to={path}
-                className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                  location.pathname === path
-                    ? "bg-teal-200 font-semibold text-teal-800"
-                    : "text-teal-700"
+                key={menu.path}
+                to={menu.path}
+                className={`block px-4 py-3 rounded-lg transition-all duration-300 ${
+                  location.pathname === menu.path
+                    ? "bg-gradient-to-r from-teal-400 to-teal-600 text-white shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                {label}
+                {menu.label}
               </Link>
-            ))}
-
-          {/* Dropdown untuk Kelola Pengumuman */}
-          <div
-            onMouseEnter={() => {
-              setPengumumanDropdownOpen(true);
-              setArtikelDropdownOpen(false);
-            }}
-            onMouseLeave={() => setPengumumanDropdownOpen(false)}
-          >
-            <button
-              onClick={() => {
-                const newState = !pengumumanDropdownOpen;
-                setPengumumanDropdownOpen(newState);
-                if (newState) setArtikelDropdownOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 rounded hover:bg-teal-100 flex justify-between items-center ${
-                isPengumumanPage
-                  ? "bg-teal-200 font-semibold text-teal-800"
-                  : "text-teal-700"
-              }`}
-            >
-              Kelola Pengumuman
-              <svg
-                className={`w-4 h-4 transform transition-transform ${
-                  dropdownOpenPengumuman ? "rotate-180" : "rotate-0"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {dropdownOpenPengumuman && (
-              <div className="ml-4 mt-1 space-y-1">
-                <Link
-                  to="/admin/tambahpengumuman"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/tambahpengumuman"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Tambah Pengumuman
-                </Link>
-                <Link
-                  to="/admin/lihatpengumuman"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/lihatpengumuman"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Lihat Pengumuman
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Dropdown untuk Kelola Artikel */}
-          <div
-            onMouseEnter={() => {
-              setArtikelDropdownOpen(true);
-              setPengumumanDropdownOpen(false);
-            }}
-            onMouseLeave={() => setArtikelDropdownOpen(false)}
-          >
-            <button
-              onClick={() => {
-                const newState = !artikelDropdownOpen;
-                setArtikelDropdownOpen(newState);
-                if (newState) setPengumumanDropdownOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 rounded hover:bg-teal-100 flex justify-between items-center ${
-                isArtikelPage
-                  ? "bg-teal-200 font-semibold text-teal-800"
-                  : "text-teal-700"
-              }`}
-            >
-              Kelola Artikel
-              <svg
-                className={`w-4 h-4 transform transition-transform ${
-                  dropdownOpenArtikel ? "rotate-180" : "rotate-0"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {dropdownOpenArtikel && (
-              <div className="ml-4 mt-1 space-y-1">
-                <Link
-                  to="/admin/tambahartikel"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/tambahartikel"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Tambah Artikel
-                </Link>
-                <Link
-                  to="/admin/lihatartikel"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/lihatartikel"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Artikel Saya
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Dropdown untuk Kelola Prestasi */}
-          <div
-            onMouseEnter={() => {
-              setPrestasiDropdownOpen(true);
-              setArtikelDropdownOpen(false);
-              setPengumumanDropdownOpen(false);
-            }}
-            onMouseLeave={() => setPrestasiDropdownOpen(false)}
-          >
-            <button
-              onClick={() => {
-                const newState = !prestasiDropdownOpen;
-                setPrestasiDropdownOpen(newState);
-                if (newState) {
-                  setArtikelDropdownOpen(false);
-                  setPengumumanDropdownOpen(false);
-                }
-              }}
-              className={`w-full text-left px-4 py-2 rounded hover:bg-teal-100 flex justify-between items-center ${
-                isPrestasiPage
-                  ? "bg-teal-200 font-semibold text-teal-800"
-                  : "text-teal-700"
-              }`}
-            >
-              Kelola Prestasi
-              <svg
-                className={`w-4 h-4 transform transition-transform ${
-                  dropdownOpenPrestasi ? "rotate-180" : "rotate-0"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {dropdownOpenPrestasi && (
-              <div className="ml-4 mt-1 space-y-1">
-                <Link
-                  to="/admin/tambahprestasi"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/tambahprestasi"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Tambah Prestasi
-                </Link>
-                <Link
-                  to="/admin/lihatprestasi"
-                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/lihatprestasi"
-                      ? "bg-teal-300 font-semibold text-teal-900"
-                      : "text-teal-700"
-                  }`}
-                >
-                  Lihat Prestasi
-                </Link>
-              </div>
-            )}
-          </div>
+            )
+          )}
         </nav>
 
-        {/* Menu Pengaturan Akun di bawah sebelum Logout */}
-        <div className="px-4 mb-4">
-          <Link
-            to="/admin/pengaturan"
-            className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-              location.pathname === "/admin/pengaturan"
-                ? "bg-teal-200 font-semibold text-teal-800"
-                : "text-teal-700"
-            }`}
-          >
-            Pengaturan Akun
-          </Link>
-        </div>
-
-        <button
+        <motion.button
           onClick={handleLogout}
-          className="cursor-pointer mb-6 mx-4 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-8 bg-red-600 text-white py-3 rounded-lg transition-all duration-300 hover:bg-red-700 shadow-md"
         >
           Logout
-        </button>
-      </aside>
+        </motion.button>
+      </motion.aside>
 
       {/* Content Area */}
       <main className="flex-1 p-8 overflow-auto max-h-screen">
         <Outlet />
       </main>
+
+      {/* WhatsApp Help Button */}
+      <a
+        href="https://wa.me/6285811303841"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed right-6 bottom-6 flex items-center space-x-3 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg cursor-pointer transition-transform transform hover:scale-105 hover:shadow-xl animate-bounce-slow"
+      >
+        <FaWhatsapp size={28} />
+        <span className="font-semibold">Butuh Bantuan?</span>
+      </a>
     </div>
   );
 };

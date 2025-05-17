@@ -88,7 +88,7 @@ const TambahPrestasi = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700"
+          className="cursor-pointer bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700"
         >
           {loading ? "Menyimpan..." : "Simpan Prestasi"}
         </button>

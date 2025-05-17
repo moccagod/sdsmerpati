@@ -1,6 +1,8 @@
+// src/pages/admin/AdminLogin.jsx
 import React, { useState } from "react";
 import { supabase } from "../../../utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -23,66 +25,91 @@ const AdminLogin = () => {
       setError(error.message);
       setLoading(false);
     } else {
-      // Login berhasil, redirect ke admin dashboard
       navigate("/admin");
     }
   };
 
   const handleBackToHome = () => {
-    navigate("/"); // Kembali ke halaman utama
+    navigate("/");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded shadow-md w-full max-w-sm"
+    <div className="flex min-h-screen">
+      {/* Left Image Section */}
+      <div
+        className="flex-1 bg-cover bg-gray-100 bg-center hidden lg:flex items-center justify-center"
+        style={{ backgroundImage: "url('/sdsmerpati/images/hero2.jpg')" }}
       >
-        <h2 className="text-2xl font-semibold mb-4 text-teal-700 text-center">
-          Login Admin
-        </h2>
+        {/* Optional Overlay for Dim Effect */}
+        <div className="bg-black/60 w-full h-full flex items-center justify-center">
+          <img className="w-52" src="/sdsmerpati/images/logo-merpati.png" alt="" />
+        </div>
+      </div>
 
-        {error && (
-          <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">
-            {error}
-          </div>
-        )}
+      {/* Right Form Section */}
+      <motion.div
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="flex-1 flex items-center justify-center p-8 bg-gray-100"
+      >
+        <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+          <h2 className="text-3xl font-bold mb-6 text-teal-700 text-center">
+            Admin Login
+          </h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 mb-3 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="bg-red-100 text-red-700 p-3 rounded mb-4"
+            >
+              {error}
+            </motion.div>
+          )}
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 mb-6 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="cursor-pointer w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700 transition"
-        >
-          {loading ? "Memproses..." : "Login"}
-        </button>
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
-        {/* Tombol Kembali ke Halaman Utama */}
-        <button
-          type="button"
-          onClick={handleBackToHome}
-          className="cursor-pointer w-full mt-4 bg-gray-400 text-white py-2 rounded hover:bg-gray-500 transition"
-        >
-          Kembali ke Halaman Utama
-        </button>
-      </form>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              disabled={loading}
+              className="cursor-pointer w-full bg-teal-600 text-white py-3 rounded font-semibold shadow-lg hover:bg-teal-700 transition mb-4"
+            >
+              {loading ? "Memproses..." : "Login"}
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="button"
+              onClick={handleBackToHome}
+              className="cursor-pointer w-full bg-gray-400 text-white py-3 rounded font-semibold shadow-lg hover:bg-gray-500 transition"
+            >
+              Kembali ke Halaman Utama
+            </motion.button>
+          </form>
+        </div>
+      </motion.div>
     </div>
   );
 };

@@ -41,6 +41,7 @@ const EditPrestasi = () => {
   }, [id]);
 
   // Simpan perubahan
+  // Simpan perubahan
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -48,15 +49,18 @@ const EditPrestasi = () => {
     setSuccess(null);
 
     try {
+      // Hanya kirim data yang diizinkan untuk di-update
+      const updates = {
+        judul,
+        tahun,
+        deskripsi,
+        foto_url: fotoUrl,
+        updated_at: new Date().toISOString(),
+      };
+
       const { error } = await supabase
         .from("prestasi")
-        .update({
-          judul,
-          tahun,
-          deskripsi,
-          foto_url: fotoUrl,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updates)
         .eq("id", id);
 
       if (error) throw error;
@@ -64,6 +68,7 @@ const EditPrestasi = () => {
       setSuccess("Prestasi berhasil diperbarui!");
       setTimeout(() => navigate("/admin/lihatprestasi"), 1500);
     } catch (err) {
+      console.error("Error updating prestasi:", err);
       setError("Gagal memperbarui prestasi.");
     } finally {
       setLoading(false);

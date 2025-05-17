@@ -48,13 +48,13 @@ const LihatPengumuman = () => {
             <div className="space-x-2">
               <button
                 onClick={() => navigate(`/admin/editpengumuman/${item.id}`)}
-                className="bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-white"
+                className="cursor-pointer bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-white"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(item.id)}
-                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white"
+                className="cursor-pointer bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white"
               >
                 Hapus
               </button>

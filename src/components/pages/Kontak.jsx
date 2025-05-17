@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Footer from "../layouts/Footer";
 import Navbar from "../layouts/Navbar";
+import { FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 
 const Kontak = () => {
@@ -108,10 +109,10 @@ const Kontak = () => {
               <p className="mb-2">
                 <strong>Email:</strong>{" "}
                 <a
-                  href="mailto:sds.merpati@gmail.com"
+                  href="mailto:sdsmerpati2024@gmail.com"
                   className="text-teal-600 hover:underline"
                 >
-                  sds.merpati@gmail.com
+                  sdsmerpati2024@gmail.com
                 </a>
               </p>
 
@@ -243,6 +244,16 @@ const Kontak = () => {
           </motion.div>
         )}
       </div>
+      {/* WhatsApp Help Button */}
+      <a
+        href="https://wa.me/62895401827200"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed right-6 bottom-6 flex items-center space-x-3 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg cursor-pointer transition-transform transform hover:scale-105 hover:shadow-xl animate-bounce-slow"
+      >
+        <FaWhatsapp size={28} />
+        <span className="font-semibold">Hubungi Kami</span>
+      </a>
       <Footer />
     </div>
   );

@@ -85,7 +85,7 @@ const TambahPengumuman = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition"
+          className="cursor-pointer bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition"
         >
           {loading ? "Menyimpan..." : "Tambah Pengumuman"}
         </button>

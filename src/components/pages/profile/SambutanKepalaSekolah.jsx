@@ -60,7 +60,7 @@ const SambutanKepalaSekolah = () => {
 
           <motion.div variants={fadeInUp} custom={0.6}>
             <h2 className="text-2xl font-semibold mb-4 text-teal-800">
-              Finna Sharfina Khadijah, M.Pd.
+              Finna Sharfina Khadijah, S.Pd.
             </h2>
             <p className="text-gray-700 leading-relaxed">
               Assalamu’alaikum warahmatullahi wabarakatuh.

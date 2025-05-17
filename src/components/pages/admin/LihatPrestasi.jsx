@@ -7,6 +7,7 @@ const LihatPrestasi = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch data prestasi dari Supabase
   const fetchPrestasi = async () => {
     try {
       const { data, error } = await supabase
@@ -15,12 +16,31 @@ const LihatPrestasi = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-
       setPrestasiList(data);
     } catch (err) {
       setError("Gagal mengambil data prestasi.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Hapus prestasi
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Apakah Anda yakin ingin menghapus prestasi ini?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const { error } = await supabase.from("prestasi").delete().eq("id", id);
+      if (error) throw error;
+
+      // Hapus data dari state setelah berhasil dihapus
+      setPrestasiList((prev) => prev.filter((item) => item.id !== id));
+      alert("Prestasi berhasil dihapus.");
+    } catch (err) {
+      alert("Gagal menghapus prestasi. Silakan coba lagi.");
+      console.error("Error deleting prestasi:", err);
     }
   };
 
@@ -67,7 +87,12 @@ const LihatPrestasi = () => {
                 >
                   Edit
                 </Link>
-                {/* Optional tombol Hapus */}
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="cursor-pointer bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white"
+                >
+                  Hapus
+                </button>
               </td>
             </tr>
           ))}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "../../utils/supabaseClient";
+import { FaWhatsapp } from "react-icons/fa";
 
 const PPDB = () => {
   // State untuk status pendaftaran
@@ -310,6 +311,16 @@ const PPDB = () => {
           </div>
         )}
       </div>
+      {/* WhatsApp Help Button */}
+      <a
+        href="https://wa.me/62895401827200"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed right-6 bottom-6 flex items-center space-x-3 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg cursor-pointer transition-transform transform hover:scale-105 hover:shadow-xl animate-bounce-slow"
+      >
+        <FaWhatsapp size={28} />
+        <span className="font-semibold">Hubungi Kami</span>
+      </a>
       <Footer />
     </div>
   );
