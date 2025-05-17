@@ -1,41 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
-// Data berita
-const beritaData = [
-  {
-    judul:
-      "BPOM Catat 17 Kejadian Luar Biasa Kasus Keracunan MBG sejak Januari",
-    tanggal: "15 Mei 2025",
-    gambar:
-      "https://statik.tempo.co/data/2025/04/22/id_1393419/1393419_720.jpg",
-    linkSumber:
-      "https://www.tempo.co/politik/bpom-catat-17-kejadian-luar-biasa-kasus-keracunan-mbg-sejak-januari-1444155",
-  },
-  {
-    judul: "Tindakan BGN setelah Kasus Keracunan MBG Kembali Terjadi",
-    tanggal: "15 Mei 2025",
-    gambar:
-      "https://statik.tempo.co/data/2025/04/24/id_1394012/1394012_720.jpg",
-    linkSumber:
-      "https://www.tempo.co/politik/tindakan-bgn-setelah-kasus-keracunan-mbg-kembali-terjadi-1444169",
-  },
-  {
-    judul:
-      "Skema Rekrutmen Guru Sekolah Rakyat Masih Dibahas Lintas Kementerian",
-    tanggal: "15 Mei 2025",
-    gambar:
-      "https://statik.tempo.co/data/2025/03/20/id_1385903/1385903_720.jpg",
-    linkSumber:
-      "https://www.tempo.co/politik/skema-rekrutmen-guru-sekolah-rakyat-masih-dibahas-lintas-kementerian-1444126",
-  },
-];
-
-// Cek apakah link eksternal
-const isExternalLink = (url) => /^https?:\/\//.test(url);
+import { supabase } from "../../utils/supabaseClient";
 
 const BeritaArtikel = () => {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(3); // Batasin 6 artikel biar nggak terlalu banyak
+
+      if (error) {
+        console.error("Error fetching articles:", error);
+      } else {
+        setArticles(data);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   return (
     <section className="bg-gray-50 py-12 px-6 md:px-20">
       <motion.div
@@ -53,40 +41,29 @@ const BeritaArtikel = () => {
         <div className="overflow-x-auto no-scrollbar">
           {/* Flex container untuk center */}
           <div className="flex justify-center space-x-4 w-max mx-auto pb-4">
-            {beritaData.map((berita, index) => {
-              const isExternal = isExternalLink(berita.linkSumber);
-
-              const CardContent = (
-                <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 w-64 flex-shrink-0">
-                  <img
-                    src={berita.gambar}
-                    alt={berita.judul}
-                    className="h-32 w-full object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-md font-semibold text-gray-800 mb-2">
-                      {berita.judul}
-                    </h3>
-                    <p className="text-sm text-gray-600">{berita.tanggal}</p>
-                  </div>
+            {articles.map((article) => (
+              <a
+                key={article.id}
+                href={article.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 w-64 flex-shrink-0"
+              >
+                <img
+                  src={article.image}
+                  alt={article.title}
+                  className="h-32 w-full object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-md font-semibold text-gray-800 mb-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {new Date(article.created_at).toLocaleDateString()}
+                  </p>
                 </div>
-              );
-
-              return isExternal ? (
-                <a
-                  key={index}
-                  href={berita.linkSumber}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {CardContent}
-                </a>
-              ) : (
-                <Link key={index} to={berita.linkSumber}>
-                  {CardContent}
-                </Link>
-              );
-            })}
+              </a>
+            ))}
           </div>
         </div>
 

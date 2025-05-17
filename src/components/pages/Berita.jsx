@@ -1,123 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-
-// Dummy data berita dengan contoh link (internal/external)
-const beritaData = [
-  {
-    id: 1,
-    judul: "Peringatan Hari Pendidikan Nasional",
-    tanggal: "15 Mei 2025",
-    deskripsi:
-      "Sekolah merayakan Hari Pendidikan Nasional dengan berbagai kegiatan edukatif.",
-    gambar: "/sdsmerpati/images/hero1.jpg",
-    link: "/berita/berita1", // internal link
-  },
-  {
-    id: 2,
-    judul: "Kegiatan Perkemahan Pramuka",
-    tanggal: "10 Mei 2025",
-    deskripsi:
-      "Siswa mengikuti perkemahan pramuka untuk melatih kemandirian dan keterampilan bertahan hidup.",
-    gambar: "/sdsmerpati/images/hero2.jpg",
-    link: "https://externalwebsite.com/berita-perkemahan", // external link
-  },
-  {
-    id: 3,
-    judul: "Kegiatan Perkemahan Pramuka",
-    tanggal: "10 Mei 2025",
-    deskripsi:
-      "Siswa mengikuti perkemahan pramuka untuk melatih kemandirian dan keterampilan bertahan hidup.",
-    gambar: "/sdsmerpati/images/hero2.jpg",
-    link: "https://externalwebsite.com/berita-perkemahan", // external link
-  },
-  {
-    id: 4,
-    judul: "Kegiatan Perkemahan Pramuka",
-    tanggal: "10 Mei 2025",
-    deskripsi:
-      "Siswa mengikuti perkemahan pramuka untuk melatih kemandirian dan keterampilan bertahan hidup.",
-    gambar: "/sdsmerpati/images/hero2.jpg",
-    link: "https://externalwebsite.com/berita-perkemahan", // external link
-  },
-  // Tambah data lain...
-];
+import { supabase } from "../../utils/supabaseClient";
 
 const Berita = () => {
-  const beritaTerbaru = [...beritaData].sort((a, b) => b.id - a.id).slice(0, 4);
+  const [articles, setArticles] = useState([]);
 
-  // Fungsi helper untuk menentukan pakai Link atau a
-  const renderLink = (to, children) => {
-    const isExternal = /^https?:\/\//.test(to);
-    if (isExternal) {
-      return (
-        <a href={to} target="_blank" rel="noopener noreferrer">
-          {children}
-        </a>
-      );
-    }
-    return <Link to={to}>{children}</Link>;
-  };
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching articles:", error);
+      } else {
+        setArticles(data);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
+      <div className="max-w-7xl mx-auto pt-28 px-4 pb-16">
+        {/* Judul Halaman */}
+        <h1 className="text-3xl font-bold text-teal-800 mb-8 text-center">
+          Berita Terbaru
+        </h1>
 
-      <div className="flex flex-col md:flex-row gap-8 max-w-7xl mx-auto pt-28 px-4 pb-16">
-        {/* Sidebar */}
-        <aside className="w-full md:w-1/3 bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-2xl font-semibold text-teal-800 mb-4">
-            Berita Terbaru
-          </h2>
-          <ul className="space-y-4">
-            {beritaTerbaru.map((berita) => (
-              <li
-                key={berita.id}
-                className="text-teal-700 font-medium hover:underline"
-              >
-                {renderLink(berita.link, berita.judul)}
-              </li>
-            ))}
-          </ul>
-        </aside>
-
-        {/* Daftar Berita Utama */}
-        <section className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-8">
-          {beritaData.map((berita) => (
-            <motion.div
-              key={berita.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+        {/* Daftar Artikel */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article) => (
+            <a
+              key={article.id}
+              href={article.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 block"
             >
-              {renderLink(
-                berita.link,
-                <>
-                  <img
-                    src={berita.gambar}
-                    alt={berita.judul}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold text-teal-800 mb-2">
-                      {berita.judul}
-                    </h3>
-                    <p className="text-sm text-teal-600 italic mb-2">
-                      {berita.tanggal}
-                    </p>
-                    <p className="text-gray-700 text-sm line-clamp-3">
-                      {berita.deskripsi}
-                    </p>
-                  </div>
-                </>
-              )}
-            </motion.div>
+              <img
+                src={article.image}
+                alt={article.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-teal-800 mb-2">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-teal-600 italic mb-2">
+                  {new Date(article.created_at).toLocaleDateString()}
+                </p>
+              </div>
+            </a>
           ))}
         </section>
       </div>
-
       <Footer />
     </div>
   );
