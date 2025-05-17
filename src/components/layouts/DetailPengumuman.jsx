@@ -8,7 +8,7 @@ const DetailPengumuman = ({ title, date, image, content, recentPosts }) => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto pt-28 px-4 lg:px-8 pb-20 flex gap-12">
+      <div className="max-w-7xl mx-auto pt-28 px-4 lg:px-8 pb-20 flex flex-col lg:flex-row gap-8">
         {/* Konten Utama */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -16,24 +16,26 @@ const DetailPengumuman = ({ title, date, image, content, recentPosts }) => {
           transition={{ duration: 0.6 }}
           className="flex-1"
         >
-          <h1 className="text-4xl font-bold mb-4 text-teal-800">{title}</h1>
-          <p className="text-gray-500 italic mb-6">{date}</p>
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-teal-800">
+            {title}
+          </h1>
+          <p className="text-gray-500 italic mb-4 md:mb-6">{date}</p>
           <img
             src={image}
             alt={title}
-            className="w-full h-96 object-cover rounded-xl shadow-md mb-6"
+            className="w-full h-60 md:h-96 object-cover rounded-xl shadow-md mb-4 md:mb-6"
           />
-          <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap">
+          <p className="text-base md:text-lg leading-relaxed text-gray-700 whitespace-pre-wrap">
             {content}
           </p>
         </motion.div>
 
         {/* Sidebar Pengumuman Terbaru */}
         <div className="w-full lg:w-80">
-          <h2 className="text-2xl font-bold text-teal-800 mb-4">
+          <h2 className="text-xl md:text-2xl font-bold text-teal-800 mb-2 md:mb-4">
             Pengumuman Terbaru
           </h2>
-          <ul className="space-y-4">
+          <ul className="space-y-3 md:space-y-4">
             {recentPosts.map((post, index) => (
               <motion.li
                 key={index}
@@ -43,12 +45,14 @@ const DetailPengumuman = ({ title, date, image, content, recentPosts }) => {
               >
                 <Link
                   to={post.link}
-                  className="block bg-white rounded-lg shadow-md p-4 hover:bg-teal-100 transition-all"
+                  className="block bg-white rounded-lg shadow-md p-3 md:p-4 hover:bg-teal-100 transition-all"
                 >
-                  <h3 className="text-lg font-semibold text-teal-700">
+                  <h3 className="text-md md:text-lg font-semibold text-teal-700">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-gray-500 italic">{post.date}</p>
+                  <p className="text-xs md:text-sm text-gray-500 italic">
+                    {post.date}
+                  </p>
                 </Link>
               </motion.li>
             ))}
