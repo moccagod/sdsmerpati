@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { supabase } from "../../../utils/supabaseClient";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import '../../../assets/style/Admin.css'
+import "../../../assets/style/Admin.css";
 
 const AdminDashboard = () => {
   const location = useLocation();
@@ -64,15 +64,16 @@ const AdminDashboard = () => {
   const [openMenu, setOpenMenu] = useState("");
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -300, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-72 bg-white shadow-lg flex flex-col h-screen sticky top-0 p-6"
+        className="w-72 bg-white shadow-lg flex flex-col h-screen fixed top-0 left-0 p-6 overflow-y-auto"
+        style={{ height: "100vh" }}
       >
-        <div className="flex items-center space-x-3 mb-8">
+        <div className="flex items-center space-x-3 mb-8 flex-shrink-0">
           <img
             src="/sdsmerpati/images/logo-merpati.png"
             alt="Logo"
@@ -162,14 +163,14 @@ const AdminDashboard = () => {
           onClick={handleLogout}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="mt-8 bg-red-600 text-white py-3 rounded-lg transition-all duration-300 hover:bg-red-700 shadow-md"
+          className="mt-8 bg-red-600 text-white py-3 rounded-lg transition-all duration-300 hover:bg-red-700 shadow-md flex-shrink-0"
         >
           Logout
         </motion.button>
       </motion.aside>
 
       {/* Content Area */}
-      <main className="flex-1 p-8 overflow-auto max-h-screen">
+      <main className="flex-1 p-8 overflow-auto max-h-screen ml-72">
         <Outlet />
       </main>
 
