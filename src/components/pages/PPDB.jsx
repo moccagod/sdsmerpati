@@ -1,12 +1,15 @@
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "../../utils/supabaseClient";
 
 const PPDB = () => {
-  // Status Pendaftaran
+  // State untuk status pendaftaran
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   // Data Jadwal Penting
@@ -111,6 +114,43 @@ const PPDB = () => {
     },
   ];
 
+  // Ambil status PPDB dari Supabase
+  useEffect(() => {
+    const fetchPPDBStatus = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("ppdb_status")
+          .select("status")
+          .single();
+
+        if (error) throw error;
+        setIsOpen(data.status);
+      } catch (err) {
+        setError("Gagal mengambil status pendaftaran.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPPDBStatus();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-gray-600">Memuat data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-red-600">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar />
@@ -122,20 +162,6 @@ const PPDB = () => {
             alt="Logo PPDB"
             className="w-96 h-auto"
           />
-        </div>
-
-        {/* Status Pendaftaran */}
-        <div className="mb-10 p-6 rounded-lg shadow-md bg-white text-center">
-          <h2 className="text-2xl font-bold text-teal-700 mb-2">
-            Status Pendaftaran
-          </h2>
-          <p
-            className={`text-lg font-bold ${
-              isOpen ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {isOpen ? "Pendaftaran Dibuka" : "Pendaftaran Ditutup"}
-          </p>
         </div>
 
         {/* Keunggulan SDS Merpati */}
@@ -258,33 +284,29 @@ const PPDB = () => {
           </div>
         </div>
 
-        {/* Section Ajakan Daftar */}
-        {isOpen && (
-          <div
-            className="relative bg-cover bg-center bg-no-repeat py-24 px-4 md:px-10 lg:px-20 mb-16 rounded-lg shadow-lg overflow-hidden"
-            style={{
-              backgroundImage: "url('/sdsmerpati/images/hero1.jpg')",
-            }}
+        {/* Status Pendaftaran */}
+        <div className="mb-10 p-6 rounded-lg shadow-md bg-white text-center">
+          <h2 className="text-2xl font-bold text-teal-700 mb-2">
+            Status Pendaftaran
+          </h2>
+          <p
+            className={`text-lg font-bold ${
+              isOpen ? "text-green-600" : "text-red-600"
+            }`}
           >
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/70"></div>
+            {isOpen ? "Pendaftaran Dibuka" : "Pendaftaran Ditutup"}
+          </p>
+        </div>
 
-            {/* Content */}
-            <div className="relative z-10 text-center text-white">
-              <h2 className="text-3xl font-bold mb-4">
-                Ayo Bergabung di SDS Merpati!
-              </h2>
-              <p className="text-lg mb-6">
-                Jangan lewatkan kesempatan untuk memberikan pendidikan terbaik
-                untuk buah hati Anda.
-              </p>
-              <Link
-                to="/form-pendaftaran"
-                className="relative inline-block px-12 py-4 text-lg font-semibold text-white bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                Daftar Sekarang
-              </Link>
-            </div>
+        {/* Tombol Daftar (jika pendaftaran dibuka) */}
+        {isOpen && (
+          <div className="text-center mb-16">
+            <Link
+              to="/form-pendaftaran"
+              className="inline-block bg-teal-600 text-white py-3 px-8 rounded-lg font-semibold shadow-md hover:bg-teal-700 transition-all"
+            >
+              Daftar Sekarang
+            </Link>
           </div>
         )}
       </div>

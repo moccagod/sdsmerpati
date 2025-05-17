@@ -32,6 +32,10 @@ import EditArtikel from "./components/pages/admin/EditArtikel";
 import TambahPengumuman from "./components/pages/admin/TambahPengumuman";
 import LihatPengumuman from "./components/pages/admin/LihatPengumuman";
 import EditPengumuman from "./components/pages/admin/EditPengumuman";
+import PengaturanPPDB from "./components/pages/admin/PengaturanPPDB";
+import LihatPrestasi from "./components/pages/admin/LihatPrestasi";
+import EditPrestasi from "./components/pages/admin/EditPrestasi";
+import TambahPrestasi from "./components/pages/admin/TambahPrestasi";
 
 function App() {
   const location = useLocation();
@@ -329,6 +333,10 @@ function App() {
             <Route path="lihatartikel" element={<ArtikelList />} />
             <Route path="/admin/artikeledit/:id" element={<EditArtikel />} />
             <Route path="pengaturan" element={<Pengaturan />} />
+            <Route path="/admin/pengaturanppdb" element={<PengaturanPPDB />} />
+            <Route path="/admin/tambahprestasi" element={<TambahPrestasi />} />
+            <Route path="/admin/lihatprestasi/" element={<LihatPrestasi />} />
+            <Route path="/admin/editprestasi/:id" element={<EditPrestasi />} />
           </Route>
         </Routes>
       </AnimatePresence>

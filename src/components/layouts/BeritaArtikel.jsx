@@ -12,7 +12,7 @@ const BeritaArtikel = () => {
         .from("articles")
         .select("*")
         .order("created_at", { ascending: false })
-        .limit(3); // Batasin 6 artikel biar nggak terlalu banyak
+        .limit(3); // Hanya 3 artikel terbaru
 
       if (error) {
         console.error("Error fetching articles:", error);
@@ -33,36 +33,38 @@ const BeritaArtikel = () => {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-teal-700 mb-8 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-teal-700 mb-8 text-center">
           Berita & Artikel
         </h2>
 
         {/* Wrapper scroll horizontal */}
         <div className="overflow-x-auto no-scrollbar">
           {/* Flex container untuk center */}
-          <div className="flex justify-center space-x-4 w-max mx-auto pb-4">
+          <div className="flex md:flex-wrap md:justify-center gap-6 w-max mx-auto pb-4">
             {articles.map((article) => (
-              <a
+              <motion.a
                 key={article.id}
                 href={article.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 w-64 flex-shrink-0"
+                className="w-60 h-64 md:w-80 md:h-80 bg-white rounded-xl shadow-md overflow-hidden flex-shrink-0 md:flex-shrink"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               >
                 <img
                   src={article.image}
                   alt={article.title}
-                  className="h-32 w-full object-cover"
+                  className="h-32 md:h-40 w-full object-cover rounded-t-xl"
                 />
-                <div className="p-4">
-                  <h3 className="text-md font-semibold text-gray-800 mb-2">
+                <div className="p-3 flex flex-col">
+                  <h3 className="text-sm md:text-lg font-semibold text-gray-800 mb-1 truncate">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs md:text-sm text-gray-600 italic">
                     {new Date(article.created_at).toLocaleDateString()}
                   </p>
                 </div>
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>

@@ -34,7 +34,8 @@ const AdminDashboard = () => {
   const dropdownOpenPengumuman = pengumumanDropdownOpen || isPengumumanPage;
 
   const menus = [
-    { path: "/admin", label: "Dashboard Utama" },
+    { path: "/admin", label: "Dashboard" },
+    { path: "/admin/pengaturanppdb", label: "PPDB" },
     { path: "/admin/pengaturan", label: "Pengaturan Akun" },
   ];
 
@@ -52,6 +53,16 @@ const AdminDashboard = () => {
       </div>
     );
   }
+
+  const [prestasiDropdownOpen, setPrestasiDropdownOpen] = useState(false);
+
+  // Cek halaman aktif untuk prestasi
+  const isPrestasiPage =
+    location.pathname.startsWith("/admin/tambahprestasi") ||
+    location.pathname.startsWith("/admin/lihatprestasi");
+
+  // Dropdown prestasi terbuka kalau state open atau halaman aktif
+  const dropdownOpenPrestasi = prestasiDropdownOpen || isPrestasiPage;
 
   return (
     <div className="min-h-screen flex bg-gray-100">
@@ -83,6 +94,70 @@ const AdminDashboard = () => {
                 {label}
               </Link>
             ))}
+
+          {/* Dropdown untuk Kelola Pengumuman */}
+          <div
+            onMouseEnter={() => {
+              setPengumumanDropdownOpen(true);
+              setArtikelDropdownOpen(false);
+            }}
+            onMouseLeave={() => setPengumumanDropdownOpen(false)}
+          >
+            <button
+              onClick={() => {
+                const newState = !pengumumanDropdownOpen;
+                setPengumumanDropdownOpen(newState);
+                if (newState) setArtikelDropdownOpen(false);
+              }}
+              className={`w-full text-left px-4 py-2 rounded hover:bg-teal-100 flex justify-between items-center ${
+                isPengumumanPage
+                  ? "bg-teal-200 font-semibold text-teal-800"
+                  : "text-teal-700"
+              }`}
+            >
+              Kelola Pengumuman
+              <svg
+                className={`w-4 h-4 transform transition-transform ${
+                  dropdownOpenPengumuman ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {dropdownOpenPengumuman && (
+              <div className="ml-4 mt-1 space-y-1">
+                <Link
+                  to="/admin/tambahpengumuman"
+                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
+                    location.pathname === "/admin/tambahpengumuman"
+                      ? "bg-teal-300 font-semibold text-teal-900"
+                      : "text-teal-700"
+                  }`}
+                >
+                  Tambah Pengumuman
+                </Link>
+                <Link
+                  to="/admin/lihatpengumuman"
+                  className={`block px-4 py-2 rounded hover:bg-teal-100 ${
+                    location.pathname === "/admin/lihatpengumuman"
+                      ? "bg-teal-300 font-semibold text-teal-900"
+                      : "text-teal-700"
+                  }`}
+                >
+                  Lihat Pengumuman
+                </Link>
+              </div>
+            )}
+          </div>
 
           {/* Dropdown untuk Kelola Artikel */}
           <div
@@ -148,30 +223,34 @@ const AdminDashboard = () => {
             )}
           </div>
 
-          {/* Dropdown untuk Kelola Pengumuman */}
+          {/* Dropdown untuk Kelola Prestasi */}
           <div
             onMouseEnter={() => {
-              setPengumumanDropdownOpen(true);
+              setPrestasiDropdownOpen(true);
               setArtikelDropdownOpen(false);
+              setPengumumanDropdownOpen(false);
             }}
-            onMouseLeave={() => setPengumumanDropdownOpen(false)}
+            onMouseLeave={() => setPrestasiDropdownOpen(false)}
           >
             <button
               onClick={() => {
-                const newState = !pengumumanDropdownOpen;
-                setPengumumanDropdownOpen(newState);
-                if (newState) setArtikelDropdownOpen(false);
+                const newState = !prestasiDropdownOpen;
+                setPrestasiDropdownOpen(newState);
+                if (newState) {
+                  setArtikelDropdownOpen(false);
+                  setPengumumanDropdownOpen(false);
+                }
               }}
               className={`w-full text-left px-4 py-2 rounded hover:bg-teal-100 flex justify-between items-center ${
-                isPengumumanPage
+                isPrestasiPage
                   ? "bg-teal-200 font-semibold text-teal-800"
                   : "text-teal-700"
               }`}
             >
-              Kelola Pengumuman
+              Kelola Prestasi
               <svg
                 className={`w-4 h-4 transform transition-transform ${
-                  dropdownOpenPengumuman ? "rotate-180" : "rotate-0"
+                  dropdownOpenPrestasi ? "rotate-180" : "rotate-0"
                 }`}
                 fill="none"
                 stroke="currentColor"
@@ -186,27 +265,27 @@ const AdminDashboard = () => {
                 />
               </svg>
             </button>
-            {dropdownOpenPengumuman && (
+            {dropdownOpenPrestasi && (
               <div className="ml-4 mt-1 space-y-1">
                 <Link
-                  to="/admin/tambahpengumuman"
+                  to="/admin/tambahprestasi"
                   className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/tambahpengumuman"
+                    location.pathname === "/admin/tambahprestasi"
                       ? "bg-teal-300 font-semibold text-teal-900"
                       : "text-teal-700"
                   }`}
                 >
-                  Tambah Pengumuman
+                  Tambah Prestasi
                 </Link>
                 <Link
-                  to="/admin/lihatpengumuman"
+                  to="/admin/lihatprestasi"
                   className={`block px-4 py-2 rounded hover:bg-teal-100 ${
-                    location.pathname === "/admin/lihatpengumuman"
+                    location.pathname === "/admin/lihatprestasi"
                       ? "bg-teal-300 font-semibold text-teal-900"
                       : "text-teal-700"
                   }`}
                 >
-                  Lihat Pengumuman
+                  Lihat Prestasi
                 </Link>
               </div>
             )}
