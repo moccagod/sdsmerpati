@@ -23,38 +23,28 @@ const Kontak = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data before submit:", formData); // Lihat di browser console
     setIsSubmitting(true);
-    setSubmitStatus(null);
 
     try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbytt6RAI6Q6rFIm7Or-TAxuRcS6J_J4sqjwzr98YJhyzJeLTxU7TTrHB2uFlM1zyE4/exec",
-        {
+      // Kirim ke FormSubmit (email) DAN Google Sheets (script)
+      await Promise.all([
+        fetch("https://formsubmit.co/ajax/sdsmerpati2024@gmail.com", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
-        }
-      );
+        }),
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyYranxtYoug_3WnhB6updtdDtxmY-AuGt75zEGuA4ZJwrnrSMjeCeriswvHJ0TL4pQ-w/exec",
+          {
+            method: "POST",
+            body: JSON.stringify(formData),
+          }
+        ),
+      ]);
 
-      const result = await response.json();
-
-      if (response.ok && result.status === "success") {
-        setSubmitStatus("success");
-        setFormData({
-          fullName: "",
-          email: "",
-          whatsapp: "",
-          message: "",
-        });
-      } else {
-        console.error("Error:", result);
-        setSubmitStatus("error");
-      }
+      setSubmitStatus("success");
+      setFormData({ fullName: "", email: "", whatsapp: "", message: "" });
     } catch (error) {
-      console.error("Error:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -102,7 +92,7 @@ const Kontak = () => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
-              className="bg-white rounded-2xl p-6"
+              className="bg-white rounded-2xl p-6 shadow-md"
             >
               <h2 className="text-xl font-semibold mb-4 text-teal-500">
                 Informasi Sekolah
@@ -148,7 +138,25 @@ const Kontak = () => {
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 Kirim Pesan
               </h2>
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form
+                className="space-y-4"
+                onSubmit={handleSubmit}
+                // Jika ingin redirect setelah submit, tambahkan:
+                // action="https://formsubmit.co/sds.merpati@gmail.com"
+                // method="POST"
+              >
+                <input
+                  type="hidden"
+                  name="_subject"
+                  value="Pesan Baru dari Website Sekolah"
+                />
+                <input
+                  type="hidden"
+                  name="_autoresponse"
+                  value="Terima kasih telah menghubungi SD Merpati. Kami akan segera merespons pesan Anda."
+                />
+                <input type="hidden" name="_template" value="table" />
+
                 <div>
                   <label className="block text-gray-600 mb-1">
                     Nama Lengkap
@@ -213,27 +221,27 @@ const Kontak = () => {
               </form>
             </motion.div>
           </div>
-          {submitStatus === "success" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-6 p-4 md:hidden mt-10 bg-green-100 text-green-700 rounded-lg"
-            >
-              Pesan berhasil terkirim! Kami akan segera menghubungi Anda.
-            </motion.div>
-          )}
-
-          {submitStatus === "error" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-6 p-4 md:hidden mt-10 bg-red-100 text-red-700 rounded-lg"
-            >
-              Terjadi kesalahan. Silakan coba lagi atau hubungi kami melalui
-              telepon/email.
-            </motion.div>
-          )}
         </div>
+        {submitStatus === "success" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-6 p-4 md:hidden mt-10 bg-green-100 text-green-700 rounded-lg"
+          >
+            Pesan berhasil terkirim! Kami akan segera menghubungi Anda.
+          </motion.div>
+        )}
+
+        {submitStatus === "error" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-6 p-4 md:hidden mt-10 bg-red-100 text-red-700 rounded-lg"
+          >
+            Terjadi kesalahan. Silakan coba lagi atau hubungi kami melalui
+            telepon/email.
+          </motion.div>
+        )}
       </div>
       <Footer />
     </div>
