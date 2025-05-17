@@ -20,8 +20,14 @@ import ProgramSekolah4 from "./components/pages/akademik/Program Sekolah/Program
 import ProgramSekolah5 from "./components/pages/akademik/Program Sekolah/ProgramSekolah5";
 import ProgramSekolah6 from "./components/pages/akademik/Program Sekolah/ProgramSekolah6";
 import Pengumuman from "./components/pages/Pengumuman";
-import Pengumuman1 from "./components/pages/pengumuman/Pengumuman1";
 import Berita1 from "./components/pages/berita/Berita1";
+import AdminDashboard from "./components/pages/admin/AdminDashboard";
+import DetailPengumuman from "./components/layouts/DetailPengumuman";
+import MainDashboard from "./components/pages/admin/MainDashboard";
+import KelolaPengumuman from "./components/pages/admin/KelolaPengumuman";
+import Pengaturan from "./components/pages/admin/Pengaturan";
+import RequireAuth from "./components/pages/admin/RequireAuth";
+import AdminLogin from "./components/pages/admin/AdminLogin";
 
 function App() {
   const location = useLocation();
@@ -259,18 +265,6 @@ function App() {
             }
           />
           <Route
-            path="/pengumuman/pengumuman1"
-            element={
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <Pengumuman1 />
-              </motion.div>
-            }
-          />
-          <Route
             path="/berita/berita1"
             element={
               <motion.div
@@ -282,6 +276,54 @@ function App() {
               </motion.div>
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <AdminDashboard />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/pengumuman/:id"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <DetailPengumuman />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/admin/login"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <AdminLogin />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth>
+                <AdminDashboard />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<MainDashboard />} />
+            <Route path="pengumuman" element={<KelolaPengumuman />} />
+            <Route path="pengaturan" element={<Pengaturan />} />
+          </Route>
         </Routes>
       </AnimatePresence>
     </>

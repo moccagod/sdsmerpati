@@ -47,6 +47,11 @@ const Footer = () => {
                 Kontak
               </Link>
             </li>
+            <li>
+              <Link to="/admin" className="hover:underline">
+                Admin Dashboard
+              </Link>
+            </li>
           </ul>
         </div>
 

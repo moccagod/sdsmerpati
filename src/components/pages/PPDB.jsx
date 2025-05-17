@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 const PPDB = () => {
   // Status Pendaftaran
   const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   // Data Jadwal Penting
   const jadwalPenting = [
@@ -79,6 +80,34 @@ const PPDB = () => {
       title: "Lingkungan Belajar Nyaman",
       description: "Suasana belajar yang mendukung perkembangan siswa.",
       icon: "🏫",
+    },
+  ];
+
+  // Pertanyaan dan Jawaban
+  const faqItems = [
+    {
+      question: "Kapan pendaftaran dibuka?",
+      answer: "Pendaftaran dibuka pada 1 Juni 2025 hingga 30 Juni 2025.",
+    },
+    {
+      question: "Apakah ada tes seleksi?",
+      answer:
+        "Ya, akan ada tes seleksi pada tanggal 5 Juli 2025. Hasil pengumuman akan diumumkan pada 10 Juli 2025.",
+    },
+    {
+      question: "Apa saja dokumen yang perlu disiapkan?",
+      answer:
+        "Dokumen yang perlu disiapkan antara lain fotokopi KK, akta kelahiran, rapor terakhir, dan pas foto 3x4 (2 lembar).",
+    },
+    {
+      question: "Apakah ada biaya pendaftaran?",
+      answer:
+        "Informasi mengenai biaya pendaftaran dapat dilihat di halaman pendaftaran.",
+    },
+    {
+      question: "Bagaimana cara melakukan daftar ulang?",
+      answer:
+        "Daftar ulang dilakukan pada 15 Juli - 20 Juli 2025 setelah pengumuman hasil seleksi.",
     },
   ];
 
@@ -186,15 +215,76 @@ const PPDB = () => {
           </ul>
         </div>
 
-        {/* Link ke Formulir Pendaftaran */}
+        {/* Pertanyaan dan Jawaban (FAQ) */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-teal-700 mb-8 text-center">
+            Pertanyaan dan Jawaban
+          </h2>
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                className="bg-white rounded-lg shadow-md p-6 cursor-pointer transition-all"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+                onClick={() =>
+                  setActiveIndex(activeIndex === index ? -1 : index)
+                }
+              >
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-teal-700">
+                    {item.question}
+                  </h3>
+                  <motion.span
+                    className="text-teal-700 text-2xl transition-transform"
+                    animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                  >
+                    ▼
+                  </motion.span>
+                </div>
+                {activeIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    transition={{ duration: 0.4 }}
+                    className="mt-4 text-gray-600 overflow-hidden"
+                  >
+                    {item.answer}
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Section Ajakan Daftar */}
         {isOpen && (
-          <div className="text-center">
-            <Link
-              to="/form-pendaftaran"
-              className="bg-teal-700 text-white px-8 py-3 rounded-lg shadow-md hover:bg-teal-800 transition-all"
-            >
-              Daftar Sekarang
-            </Link>
+          <div
+            className="relative bg-cover bg-center bg-no-repeat py-24 px-4 md:px-10 lg:px-20 mb-16 rounded-lg shadow-lg overflow-hidden"
+            style={{
+              backgroundImage: "url('/sdsmerpati/images/hero1.jpg')",
+            }}
+          >
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/70"></div>
+
+            {/* Content */}
+            <div className="relative z-10 text-center text-white">
+              <h2 className="text-3xl font-bold mb-4">
+                Ayo Bergabung di SDS Merpati!
+              </h2>
+              <p className="text-lg mb-6">
+                Jangan lewatkan kesempatan untuk memberikan pendidikan terbaik
+                untuk buah hati Anda.
+              </p>
+              <Link
+                to="/form-pendaftaran"
+                className="relative inline-block px-12 py-4 text-lg font-semibold text-white bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg shadow-lg hover:scale-105 transition-all duration-300"
+              >
+                Daftar Sekarang
+              </Link>
+            </div>
           </div>
         )}
       </div>
