@@ -24,7 +24,7 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/"; // redirect setelah logout
+    window.location.href = "/sdsmerpati/"; // redirect setelah logout
   };
 
   if (isMobile) {
